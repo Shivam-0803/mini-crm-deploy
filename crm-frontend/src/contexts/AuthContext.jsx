@@ -59,7 +59,18 @@ export const AuthProvider = ({ children }) => {
   const login = () => {
     try {
       console.log('Initiating Google OAuth login...');
-      window.location.href = `${import.meta.env.VITE_AUTH_URL || api.defaults.baseURL}/google`;
+      // Ensure we're using the fully qualified Google auth URL
+      const authBaseUrl = import.meta.env.VITE_AUTH_URL || `${api.defaults.baseURL}/auth`;
+      
+      // Remove any trailing slashes for consistency
+      const cleanAuthUrl = authBaseUrl.endsWith('/') 
+        ? authBaseUrl.slice(0, -1) 
+        : authBaseUrl;
+      
+      // Target the Google auth endpoint
+      window.location.href = `${cleanAuthUrl}/google`;
+      
+      console.log(`Redirecting to: ${cleanAuthUrl}/google`);
     } catch (error) {
       console.error('Login redirect failed:', error);
       setError('Login failed');

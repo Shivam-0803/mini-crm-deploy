@@ -9,6 +9,21 @@ router.get('/healthz', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Server is running' });
 });
 
+// Debug endpoint for authentication environment variables
+router.get('/debug-env', (req, res) => {
+  // Only show this in development or with a specific debug flag
+  if (process.env.NODE_ENV === 'development' || process.env.DEBUG_AUTH === 'true') {
+    res.json({
+      environment: process.env.NODE_ENV,
+      frontendUrl: process.env.FRONTEND_URL,
+      googleCallbackUrl: process.env.GOOGLE_CALLBACK_URL,
+      corsOrigin: process.env.CORS_ORIGIN
+    });
+  } else {
+    res.status(403).json({ message: 'Debug endpoint disabled in production' });
+  }
+});
+
 // Google OAuth routes
 router.get('/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })
