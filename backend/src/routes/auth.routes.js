@@ -22,7 +22,7 @@ router.get('/google/callback',
   }),
   (req, res) => {
     // Redirect to frontend after successful login
-    res.redirect('http://localhost:5174?auth_success=true');
+    res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:5174'}?auth_success=true`);
   }
 );
 
