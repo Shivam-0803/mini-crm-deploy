@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
   const login = () => {
     try {
       console.log('Initiating Google OAuth login...');
-      window.location.href = `${api.defaults.baseURL}/auth/google`;
+      window.location.href = `${import.meta.env.VITE_AUTH_URL || api.defaults.baseURL}/google`;
     } catch (error) {
       console.error('Login redirect failed:', error);
       setError('Login failed');
