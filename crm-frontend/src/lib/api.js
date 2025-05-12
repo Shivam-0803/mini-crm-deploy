@@ -13,7 +13,8 @@ const getBaseUrl = () => {
   }
 
   // Default to localhost for development
-  return 'http://localhost:3001';
+  // return 'http://localhost:3001';
+  return 'https://mini-crm-backend-1z1s.onrender.com';
 };
 
 // Create axios instance with default config
