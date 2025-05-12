@@ -41,7 +41,7 @@ app.use(cors({
   origin: ['https://mini-crm-frontend-yt2n.onrender.com', 'http://localhost:5174'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control'],
   exposedHeaders: ['Access-Control-Allow-Origin']
 }));
 

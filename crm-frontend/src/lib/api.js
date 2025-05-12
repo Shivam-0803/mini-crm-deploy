@@ -21,8 +21,7 @@ const api = axios.create({
   baseURL: getBaseUrl(),
   withCredentials: true,
   headers: {
-    'Content-Type': 'application/json',
-    'Cache-Control': 'no-cache' // Prevent caching of auth requests
+    'Content-Type': 'application/json'
   }
 });
 
