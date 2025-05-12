@@ -1,0 +1,32 @@
+{
+  "name": "mini-crm",
+  "version": "1.0.0",
+  "description": "Mini CRM - Marketing Campaign Management System",
+  "workspaces": [
+    "backend",
+    "crm-frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd crm-frontend && npm run dev",
+    "install:all": "npm install && npm run install:backend && npm run install:frontend",
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd crm-frontend && npm install",
+    "start": "cd backend && npm start",
+    "build": "cd crm-frontend && npm run build"
+  },
+  "keywords": [
+    "crm",
+    "marketing",
+    "campaign",
+    "segmentation",
+    "node",
+    "react"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.1"
+  }
+}
