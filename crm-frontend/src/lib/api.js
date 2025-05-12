@@ -22,11 +22,10 @@ const api = axios.create({
   baseURL: getBaseUrl(),
   withCredentials: true,
   headers: {
-    'Content-Type': 'application/json'
-  },
-  // Ensure cookies are sent with cross-origin requests
-  xsrfCookieName: 'XSRF-TOKEN',
-  xsrfHeaderName: 'X-XSRF-TOKEN'
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Cache-Control': 'no-cache'
+  }
 });
 
 // Add a request interceptor
@@ -34,6 +33,10 @@ api.interceptors.request.use(
   (config) => {
     // Ensure credentials are always included
     config.withCredentials = true;
+    
+    // Log request for debugging
+    console.log(`Making ${config.method} request to ${config.url}`, config);
+    
     return config;
   },
   (error) => {
@@ -45,6 +48,7 @@ api.interceptors.request.use(
 // Add a response interceptor
 api.interceptors.response.use(
   (response) => {
+    console.log(`Response from ${response.config.url}:`, response.data);
     return response;
   },
   (error) => {
@@ -55,6 +59,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && 
         !window.location.pathname.includes('login') && 
         !error.config.url.includes('/auth/me')) {
+      console.log('Unauthorized access detected, redirecting to login');
       window.location.href = '/login';
     }
     return Promise.reject(error);

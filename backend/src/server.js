@@ -40,10 +40,13 @@ const allowedOrigins = [
 app.use(cors({
   origin: process.env.CORS_ORIGIN || 'https://mini-crm-frontend-yt2n.onrender.com',
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control'],
-  exposedHeaders: ['Access-Control-Allow-Origin']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'Accept'],
+  exposedHeaders: ['Access-Control-Allow-Origin', 'Access-Control-Allow-Credentials']
 }));
+
+// Add preflight OPTIONS handling
+app.options('*', cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -51,7 +54,7 @@ app.use(morgan('dev'));
 
 // Session configuration
 app.use(session({
-  secret: process.env.JWT_SECRET,
+  secret: process.env.JWT_SECRET || 'super-secret-key-change-in-production',
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({

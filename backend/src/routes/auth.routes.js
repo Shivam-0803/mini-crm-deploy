@@ -35,6 +35,23 @@ router.get('/debug-session', (req, res) => {
   });
 });
 
+// Debug endpoint to test cookie setting
+router.get('/test-cookie', (req, res) => {
+  // Set a test cookie
+  res.cookie('test_cookie', 'cookie_value', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    maxAge: 3600000 // 1 hour
+  });
+  
+  res.json({
+    message: 'Test cookie set',
+    cookieSet: true,
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Google OAuth routes
 router.get('/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })
