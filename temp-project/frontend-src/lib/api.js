@@ -9,7 +9,7 @@ const getBaseUrl = () => {
 
   // Use production URL with Render.com domain
   if (import.meta.env.PROD) {
-    return 'https://mini-crm-backend-cb6s.onrender.com';
+    return 'https://mini-crm-backend-yt2n.onrender.com';
   }
 
   // Default to localhost for development

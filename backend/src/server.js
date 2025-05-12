@@ -33,12 +33,14 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:5173', // Development frontend
   'http://localhost:5174', // Additional development frontend port
-  'https://mini-crm-frontend.onrender.com', // Production frontend
+  'https://mini-crm-frontend-yt2n.onrender.com', // Production frontend
 ];
 
 // Simplified CORS configuration
 app.use(cors({
-  origin: true, // Allow requests from any origin in development
+  origin: process.env.NODE_ENV === 'production' 
+    ? 'https://mini-crm-frontend-yt2n.onrender.com'
+    : true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -107,7 +109,7 @@ app.use((err, req, res, next) => {
 });
 
 // MongoDB connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/bolt-crm', {
+mongoose.connect(process.env.MONGODB_URI, {
   // useNewUrlParser: true,
   // useUnifiedTopology: true,
   serverSelectionTimeoutMS: 5000,
