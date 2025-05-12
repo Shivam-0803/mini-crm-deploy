@@ -21,19 +21,21 @@ export const AuthProvider = ({ children }) => {
         console.log('Auth check successful:', response.data.user);
         setUser(response.data.user);
         setError(null);
+        return true; // Authentication successful
       } else {
         console.log('Auth check returned no user');
         setUser(null);
+        return false; // Authentication failed
       }
     } catch (error) {
       console.error('Auth check error:', error.response || error);
       setUser(null);
       if (error.response?.status === 401) {
         console.log('User is not authenticated');
-        navigate('/login');
       } else {
         setError('Authentication check failed');
       }
+      return false; // Authentication failed
     } finally {
       setLoading(false);
     }
@@ -42,13 +44,23 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const authSuccess = urlParams.get('auth_success');
+    const uid = urlParams.get('uid');
     
     if (authSuccess === 'true') {
-      console.log('Detected successful OAuth callback');
-      checkAuth();
-      // After successful authentication, redirect to dashboard
-      window.history.replaceState({}, document.title, '/dashboard');
-      navigate('/dashboard');
+      console.log('Detected successful OAuth callback with user ID:', uid);
+      
+      // First try to check authentication
+      checkAuth().then(isAuthenticated => {
+        if (isAuthenticated) {
+          console.log('Successfully authenticated, navigating to dashboard');
+          // Clear the URL parameters
+          window.history.replaceState({}, document.title, '/dashboard');
+          navigate('/dashboard');
+        } else {
+          console.error('Authentication verification failed after OAuth callback');
+          navigate('/login');
+        }
+      });
       return;
     }
     

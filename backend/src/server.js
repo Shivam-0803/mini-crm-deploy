@@ -61,10 +61,10 @@ app.use(session({
     touchAfter: 24 * 3600 // time period in seconds
   }),
   cookie: {
-    secure: process.env.NODE_ENV === 'production',
+    secure: true, // Always use secure cookies in production
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000, // 1 day
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    sameSite: 'none', // Required for cross-site cookies
     path: '/'
   },
   name: 'bolt.sid' // Custom session cookie name

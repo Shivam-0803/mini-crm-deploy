@@ -24,6 +24,17 @@ router.get('/debug-env', (req, res) => {
   }
 });
 
+// Debug endpoint for session and authentication
+router.get('/debug-session', (req, res) => {
+  res.json({
+    isAuthenticated: req.isAuthenticated(),
+    sessionID: req.sessionID,
+    user: req.user || null,
+    cookies: req.cookies || {},
+    session: req.session || {}
+  });
+});
+
 // Google OAuth routes
 router.get('/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })
@@ -38,12 +49,20 @@ router.get('/google/callback',
   (req, res) => {
     // Log user and redirect URL for debugging
     console.log('OAuth successful, user authenticated:', req.user?.id);
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5174';
-    const redirectUrl = `${frontendUrl}?auth_success=true`;
-    console.log('Redirecting to:', redirectUrl);
     
-    // Redirect to frontend after successful login
-    res.redirect(redirectUrl);
+    // Ensure the session is saved before redirecting
+    req.session.save((err) => {
+      if (err) {
+        console.error('Session save error:', err);
+      }
+      
+      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5174';
+      const redirectUrl = `${frontendUrl}?auth_success=true&uid=${req.user?.id || 'unknown'}`;
+      console.log('Redirecting to:', redirectUrl);
+      
+      // Redirect to frontend after successful login
+      res.redirect(redirectUrl);
+    });
   }
 );
 
