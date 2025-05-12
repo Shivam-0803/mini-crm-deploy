@@ -38,7 +38,8 @@ router.get('/google/callback',
   (req, res) => {
     // Log user and redirect URL for debugging
     console.log('OAuth successful, user authenticated:', req.user?.id);
-    const redirectUrl = `${process.env.FRONTEND_URL || 'http://localhost:5174'}?auth_success=true`;
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5174';
+    const redirectUrl = `${frontendUrl}?auth_success=true`;
     console.log('Redirecting to:', redirectUrl);
     
     // Redirect to frontend after successful login

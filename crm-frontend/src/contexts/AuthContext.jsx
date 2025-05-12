@@ -40,21 +40,24 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if(location.pathname !== '/login') {
-      checkAuth();
-    } else {
-      setLoading(false);
-    }
-    
     const urlParams = new URLSearchParams(window.location.search);
     const authSuccess = urlParams.get('auth_success');
     
     if (authSuccess === 'true') {
       console.log('Detected successful OAuth callback');
       checkAuth();
-      window.history.replaceState({}, document.title, window.location.pathname);
+      // After successful authentication, redirect to dashboard
+      window.history.replaceState({}, document.title, '/dashboard');
+      navigate('/dashboard');
+      return;
     }
-  }, [location.pathname]);
+    
+    if(location.pathname !== '/login') {
+      checkAuth();
+    } else {
+      setLoading(false);
+    }
+  }, [location.pathname, navigate]);
 
   const login = () => {
     try {
