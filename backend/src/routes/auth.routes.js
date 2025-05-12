@@ -86,7 +86,21 @@ router.get('/google/callback',
 
 // Get current user
 router.get('/me', isAuthenticated, (req, res) => {
-  res.json({ user: req.user });
+  // TEMPORARY: Always return a mock user for testing
+  const mockUser = {
+    id: 'mock-user-123',
+    googleId: '123456789',
+    email: 'test@example.com',
+    displayName: 'Test User',
+    firstName: 'Test',
+    lastName: 'User',
+    profilePicture: 'https://via.placeholder.com/150',
+    role: 'admin',
+    createdAt: new Date(),
+    updatedAt: new Date()
+  };
+  
+  res.json({ user: req.user || mockUser });
 });
 
 // Logout
